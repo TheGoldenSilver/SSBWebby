@@ -22,7 +22,7 @@ namespace GenderApplication.Controllers
         // GET: Genders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Genders.ToListAsync());
+            return View(model: await _context.Genders.ToListAsync());
         }
 
         // GET: Genders/Details/5

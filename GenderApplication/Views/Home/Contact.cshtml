@@ -1,0 +1,145 @@
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="contact-page">
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Get in Touch</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="contact-form-card">
+                    <form method="post" asp-controller="Home" asp-action="SubmitContact">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label for="name">Your Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="subject">Subject</label>
+                            <input type="text" class="form-control" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="message">Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="contact-info-cards mt-5">
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="info-card">
+                                <i class="fas fa-phone mb-3"></i>
+                                <h3>Phone</h3>
+                                <p><a href="tel:+69987654321">+6998 765 4321</a></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="info-card">
+                                <i class="fas fa-envelope mb-3"></i>
+                                <h3>Email</h3>
+                                <p><a href="mailto:info@skillsandbox.com">info@skillsandbox.com</a></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="info-card">
+                                <i class="fas fa-map-marker-alt mb-3"></i>
+                                <h3>Location</h3>
+                                <p>4L James Street<br>Manila, Philippines 0014</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.contact-page {
+    background: linear-gradient(135deg, rgba(73, 84, 133, 0.1) 0%, rgba(42, 49, 80, 0.1) 100%);
+    min-height: calc(100vh - 160px);
+}
+
+.contact-form-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(255, 202, 64, 0.1);
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 202, 64, 0.1);
+    color: var(--text-light);
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-color);
+    color: var(--text-light);
+    box-shadow: 0 0 0 0.2rem rgba(255, 202, 64, 0.25);
+}
+
+label {
+    color: var(--text-light);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 202, 64, 0.1);
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+}
+
+.info-card i {
+    font-size: 2rem;
+    color: var(--accent-color);
+}
+
+.info-card h3 {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 10px;
+}
+
+.info-card p {
+    margin: 0;
+    color: var(--text-light);
+}
+
+.info-card a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.info-card a:hover {
+    color: var(--accent-color);
+}
+</style> 

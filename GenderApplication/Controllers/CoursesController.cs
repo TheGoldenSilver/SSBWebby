@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CourseApplication.Models;
+using GenderApplication.Models;
 using GenderApplication.Data;
 
 namespace GenderApplication.Controllers
@@ -34,7 +34,7 @@ namespace GenderApplication.Controllers
             }
 
             var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.CourseId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (course == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace GenderApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseId,CourseName,CourseDescription")] Course course)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,IconUrl,Department")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +86,9 @@ namespace GenderApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseId,CourseName,CourseDescription")] Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,IconUrl,Department")] Course course)
         {
-            if (id != course.CourseId)
+            if (id != course.Id)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace GenderApplication.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseExists(course.CourseId))
+                    if (!CourseExists(course.Id))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace GenderApplication.Controllers
             }
 
             var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.CourseId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (course == null)
             {
                 return NotFound();
@@ -151,7 +151,7 @@ namespace GenderApplication.Controllers
 
         private bool CourseExists(int id)
         {
-            return _context.Courses.Any(e => e.CourseId == id);
+            return _context.Courses.Any(e => e.Id == id);
         }
     }
 }

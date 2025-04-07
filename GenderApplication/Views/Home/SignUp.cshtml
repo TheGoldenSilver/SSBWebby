@@ -1,0 +1,239 @@
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="signup-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="signup-form">
+                    <h2 class="section-title">Create Your Account</h2>
+                    <form asp-action="SignUp" method="post" novalidate>
+                        <div class="form-group">
+                            <label for="fullName" data-error="Please enter your full name">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" required placeholder="Enter your full name">
+                            <div class="validation-message">Please enter your full name</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" data-error="Please enter a valid email address">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email address">
+                            <div class="validation-message">Please enter a valid email address</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" data-error="Please enter your phone number">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required placeholder="Enter your phone number">
+                            <div class="validation-message">Please enter your phone number</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="province" data-error="Please select your province">Province</label>
+                            <select class="form-control" id="province" name="province" required onchange="updateCities()">
+                                <option value="">Select your province</option>
+                                <option value="Cavite">Cavite</option>
+                                <option value="Metro Manila">Metro Manila</option>
+                                <option value="Laguna">Laguna</option>
+                            </select>
+                            <div class="validation-message">Please select your province</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="city" data-error="Please select your city">City</label>
+                            <select class="form-control" id="city" name="city" required>
+                                <option value="">Select your city</option>
+                            </select>
+                            <div class="validation-message">Please select your city</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="education" data-error="Please select your highest education">Highest Educational Attainment</label>
+                            <select class="form-control" id="education" name="education" required>
+                                <option value="">Select your highest education</option>
+                                <option value="Junior High School">Junior High School</option>
+                                <option value="Senior High School">Senior High School</option>
+                                <option value="College">College</option>
+                                <option value="Undergraduate">Undergraduate</option>
+                            </select>
+                            <div class="validation-message">Please select your highest education</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="workExperience" data-error="Please select your work experience">Work Experience</label>
+                            <select class="form-control" id="workExperience" name="workExperience" required>
+                                <option value="">Select your work experience</option>
+                                <option value="No">No</option>
+                                <option value="Full-time">Yes, Full-time</option>
+                                <option value="Part-time">Yes, Part-time</option>
+                                <option value="Internship">Yes, Internship</option>
+                            </select>
+                            <div class="validation-message">Do you have any work experience?</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="careerOpportunities" data-error="Please select your career preference">Looking for Career Opportunities</label>
+                            <select class="form-control" id="careerOpportunities" name="careerOpportunities" required>
+                                <option value="">Select your career preference</option>
+                                <option value="No">Not yet</option>
+                                <option value="Full-time">Yes, Full-time</option>
+                                <option value="Part-time">Yes, Part-time</option>
+                            </select>
+                            <div class="validation-message">Are you looking for career opportunities?</div>
+                        </div>
+                        <div class="form-group">
+                            <label data-error="Please select a training course">Training Course</label>
+                            <div class="training-options">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="trainingCourse" id="softwareDev" value="Software Developer" required>
+                                    <label class="form-check-label" for="softwareDev">
+                                        Software Developer
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="trainingCourse" id="salesManagement" value="Sales and Management">
+                                    <label class="form-check-label" for="salesManagement">
+                                        Sales and Management
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="trainingCourse" id="officeManagement" value="Office Management">
+                                    <label class="form-check-label" for="officeManagement">
+                                        Office Management
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="validation-message">Please select a training course</div>
+                        </div>
+                        <div class="form-group password-field">
+                            <label for="password" data-error="Please enter a password">Password</label>
+                            <div class="password-input-container">
+                                <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password">
+                                <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="validation-message">Please enter a password</div>
+                        </div>
+                        <div class="form-group password-field">
+                            <label for="confirmPassword" data-error="Please confirm your password">Confirm Password</label>
+                            <div class="password-input-container">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                                <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="validation-message">Please confirm your password</div>
+                        </div>
+                        <div class="form-group terms-section">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="privacyAct" name="privacyAct" required>
+                                <label class="form-check-label" for="privacyAct">
+                                    I have read and agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Data Privacy Act</a>
+                                </label>
+                                <div class="validation-message">You must accept the Data Privacy Act</div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="termsOfService" name="termsOfService" required>
+                                <label class="form-check-label" for="termsOfService">
+                                    I have read and agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
+                                </label>
+                                <div class="validation-message">You must accept the Terms of Service</div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a asp-action="Login">Log in</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyModalLabel">Data Privacy Act</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Data Privacy Notice</h6>
+                <p>In accordance with the Data Privacy Act of 2012, we are committed to protecting your personal information. By using our service, you agree that:</p>
+                <ul>
+                    <li>We collect and process your personal information for legitimate purposes.</li>
+                    <li>Your information will be used for registration, communication, and service improvement.</li>
+                    <li>We implement appropriate security measures to protect your data.</li>
+                    <li>You have the right to access, correct, and request deletion of your personal information.</li>
+                    <li>We may share your information with authorized partners and service providers.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms of Service Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms of Service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Terms and Conditions</h6>
+                <p>By using our service, you agree to the following terms:</p>
+                <ul>
+                    <li>You must provide accurate and complete information during registration.</li>
+                    <li>You are responsible for maintaining the confidentiality of your account.</li>
+                    <li>You agree to use the service for lawful purposes only.</li>
+                    <li>We reserve the right to modify or terminate services at any time.</li>
+                    <li>You understand that training and career opportunities are subject to availability and qualification.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword(inputId) {
+        const passwordInput = document.getElementById(inputId);
+        const toggleButton = passwordInput.nextElementSibling;
+        const icon = toggleButton.querySelector('i');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    const citiesByProvince = {
+        'Cavite': ['Cavite City', 'Bacoor', 'Dasmariñas', 'General Trias', 'Imus', 'Trece Martires', 'Tagaytay', 'Carmona'],
+        'Metro Manila': ['Caloocan', 'Las Piñas', 'Makati', 'Malabon', 'Mandaluyong', 'Marikina', 'Muntinlupa', 'Navotas', 'Parañaque', 'Pasay', 'Pasig', 'Quezon City', 'San Juan', 'Taguig', 'Valenzuela', 'Pateros'],
+        'Laguna': ['San Pedro', 'Biñan', 'Santa Rosa', 'Cabuyao', 'Calamba', 'San Pablo']
+    };
+
+    function updateCities() {
+        const provinceSelect = document.getElementById('province');
+        const citySelect = document.getElementById('city');
+        const selectedProvince = provinceSelect.value;
+
+        // Clear existing options
+        citySelect.innerHTML = '<option value="">Select your city</option>';
+
+        if (selectedProvince && citiesByProvince[selectedProvince]) {
+            citiesByProvince[selectedProvince].forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                citySelect.appendChild(option);
+            });
+        }
+    }
+</script> 

@@ -18,8 +18,44 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Location()
+    {
+        return View();
+    }
+
     public IActionResult Privacy()
     {
+        return View();
+    }
+
+    public IActionResult SignUp()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult SignUp(string fullName, string email, string phone, string province, string city, string education, string workExperience, string careerOpportunities, string trainingCourse, string password, string confirmPassword, bool privacyAct, bool termsOfService)
+    {
+        if (!privacyAct || !termsOfService)
+        {
+            ModelState.AddModelError("", "You must accept both the Data Privacy Act and Terms of Service to proceed.");
+            return View();
+        }
+
+        if (ModelState.IsValid)
+        {
+            // Here you would typically:
+            // 1. Validate the input
+            // 2. Check if the email is already registered
+            // 3. Hash the password
+            // 4. Save the user to the database
+            // 5. Send a confirmation email
+            
+            // For now, we'll just redirect to the home page
+            TempData["SuccessMessage"] = "Account created successfully! Please log in.";
+            return RedirectToAction(nameof(Index));
+        }
+        
         return View();
     }
 

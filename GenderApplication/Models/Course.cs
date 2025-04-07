@@ -1,24 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace CourseApplication.Models
+namespace GenderApplication.Models
 {
     public class Course
     {
-        [Key]
-        [Display(Name = "Course ID")]
-        public int CourseId { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        [Column(TypeName = "VARCHAR(100)")]
-        [Display(Name = "Course Name")]
-        public required string CourseName { get; set; }
+        [StringLength(100)]
+        public string Name { get; set; }
 
         [Required]
-        [MaxLength(1000)]
-        [Column(TypeName = "VARCHAR(1000)")]
-        [Display(Name = "Course Description")]
-        public required string CourseDescription { get; set; }
+        [StringLength(500)]
+        public string Description { get; set; }
+
+        [StringLength(200)]
+        public string IconUrl { get; set; }
+
+        [Required]
+        public string Department { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public bool IsActive { get; set; } = true;
     }
 }
