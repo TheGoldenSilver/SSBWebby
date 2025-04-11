@@ -33,6 +33,57 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Login(string email, string password, bool rememberMe)
+    {
+        // Here you would typically:
+        // 1. Validate the credentials against your database
+        // 2. Set up authentication cookies or tokens
+        // 3. Redirect to the appropriate page based on user role
+        
+        // For now, we'll just redirect to the home page
+        // In a real application, you would check credentials and handle errors
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            ViewData["ErrorMessage"] = "Email and password are required.";
+            return View();
+        }
+        
+        // Simulate successful login
+        TempData["SuccessMessage"] = "You have successfully logged in!";
+        return RedirectToAction(nameof(Index));
+    }
+
+    public IActionResult ForgotPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult ForgotPassword(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            ViewData["ErrorMessage"] = "Email address is required.";
+            return View();
+        }
+        
+        // Here you would typically:
+        // 1. Check if the email exists in your database
+        // 2. Generate a password reset token
+        // 3. Send an email with the reset link
+        // 4. Store the token in your database with an expiration time
+        
+        // For now, we'll just show a success message
+        ViewData["SuccessMessage"] = "If your email is registered with us, you will receive password reset instructions shortly.";
+        return View();
+    }
+
     [HttpPost]
     public IActionResult SignUp(string fullName, string email, string phone, string province, string city, string education, string workExperience, string careerOpportunities, string trainingCourse, string password, string confirmPassword, bool privacyAct, bool termsOfService)
     {

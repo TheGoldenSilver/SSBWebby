@@ -25,6 +25,37 @@ namespace GenderApplication.Controllers
             return View(await _context.Courses.ToListAsync());
         }
 
+        // GET: Courses/Department/{dept}
+        [Route("Courses/Department/{dept}")]
+        public IActionResult Department(string dept)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dept))
+                {
+                    return NotFound();
+                }
+
+                // Return the appropriate view based on the department
+                switch (dept.ToUpper())
+                {
+                    case "IT":
+                        return View("Department/IT");
+                    case "OFFICE":
+                        return View("Department/Office");
+                    case "SALES":
+                        return View("Department/Sales");
+                    default:
+                        return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
         // GET: Courses/Details/5
         public async Task<IActionResult> Details(int? id)
         {

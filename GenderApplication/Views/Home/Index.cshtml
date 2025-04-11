@@ -80,7 +80,7 @@
                     <img src="~/image/IT Department Photos.jpg" alt="IT Department" class="course-icon">
                     <h3 class="course-title">IT Department</h3>
                     <p>Learn programming, web development, and IT fundamentals</p>
-                    <a asp-controller="Courses" asp-action="Department" asp-route-dept="IT" class="btn btn-primary mt-3">Learn More</a>
+                    <a href="/Courses/Department/IT" class="btn btn-primary mt-3">Learn More</a>
                 </div>
             </div>
             <div class="col-md-4">
@@ -88,7 +88,7 @@
                     <img src="~/image/OM Photos.jpg" alt="Office Management" class="course-icon">
                     <h3 class="course-title">Office Management</h3>
                     <p>Master essential office skills and management techniques</p>
-                    <a asp-controller="Courses" asp-action="Department" asp-route-dept="Office" class="btn btn-primary mt-3">Learn More</a>
+                    <a href="/Courses/Department/Office" class="btn btn-primary mt-3">Learn More</a>
                 </div>
             </div>
             <div class="col-md-4">
@@ -96,7 +96,7 @@
                     <img src="~/image/Sales and Marketing Photos.jpg" alt="Sales and Marketing" class="course-icon">
                     <h3 class="course-title">Sales and Marketing</h3>
                     <p>Develop expertise in modern sales and marketing strategies</p>
-                    <a asp-controller="Courses" asp-action="Department" asp-route-dept="Sales" class="btn btn-primary mt-3">Learn More</a>
+                    <a href="/Courses/Department/Sales" class="btn btn-primary mt-3">Learn More</a>
                 </div>
             </div>
         </div>
@@ -198,5 +198,14 @@
                 );
             }
         });
+
+        function toggleCourseDetails(detailsId) {
+            const details = document.getElementById(detailsId);
+            if (details.style.display === 'none') {
+                details.style.display = 'block';
+            } else {
+                details.style.display = 'none';
+            }
+        }
     </script>
 }
