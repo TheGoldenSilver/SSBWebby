@@ -1,126 +1,168 @@
-@*
+﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     ViewData["Title"] = "Office Management Courses";
 }
 
-<div class="signup-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="signup-form">
-                    <nav aria-label="breadcrumb" class="mb-4">
-                        <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-white">Courses</a></li>
-                            <li class="breadcrumb-item active text-white" aria-current="page">Office Management</li>
-                        </ol>
-                    </nav>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Courses</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Office Management</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
 
-                    <div class="row align-items-center">
-                        <div class="col-md-4 text-center">
-                            <div class="rounded-circle bg-primary bg-opacity-25 p-4 mb-3 mx-auto" style="width: 150px; height: 150px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-briefcase fa-4x text-white"></i>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <h1 class="section-title text-start mb-3 text-white">Office Management</h1>
-                            <div class="badge bg-primary mb-3 px-3 py-2">Office Management Department</div>
-                            <p class="lead text-white">Comprehensive office management courses designed to equip you with essential administrative and organizational skills.</p>
-                        </div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <div class="bg-light rounded p-4 mb-3">
+                        <i class="fas fa-briefcase fa-4x text-primary"></i>
                     </div>
+                </div>
+                <div class="col-md-8">
+                    <h1 class="display-4 mb-3">Office Management</h1>
+                    <div class="badge bg-primary mb-3">Office Management Department</div>
+                    <p class="lead">Comprehensive office management courses designed to equip you with essential administrative and organizational skills.</p>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="signup-form mb-4">
-                        <h2 class="section-title text-start h3 mb-4 text-white">About Our Office Management Courses</h2>
-                        <p class="mb-4 text-white">Our office management courses are designed to provide you with comprehensive knowledge and practical skills in modern office administration. Whether you're starting your career or looking to advance to a managerial position, our courses cover essential topics:</p>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        About Our Office Management Courses
+                    </h2>
+                    <div class="course-description">
+                        <p>Our Office Management courses are designed to provide you with the skills and knowledge needed to excel in administrative roles. Whether you're starting your career or looking to advance, our courses cover a wide range of topics including:</p>
                         
-                        <div class="course-list">
-                            <div class="course-item p-4 mb-3 bg-dark bg-opacity-25 rounded-3 shadow-sm border border-light border-opacity-10">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="mb-0 fw-bold text-white">Administrative Management</h5>
-                                    <span class="badge bg-primary">3 months</span>
-                                </div>
-                                <p class="mb-2 text-white">Master essential office administration and management skills.</p>
-                                <div class="d-flex gap-2">
-                                    <span class="badge bg-primary bg-opacity-25 text-white">Office Systems</span>
-                                    <span class="badge bg-primary bg-opacity-25 text-white">Document Management</span>
-                                    <span class="badge bg-primary bg-opacity-25 text-white">Communication</span>
-                                </div>
-                            </div>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Administrative Skills</strong> - Master essential office procedures, document management, and administrative workflows
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Business Communication</strong> - Develop professional communication skills for emails, reports, and presentations
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Project Management</strong> - Learn to organize, plan, and execute office projects efficiently
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Office Technology</strong> - Master Microsoft Office Suite, scheduling software, and other essential office tools
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Customer Service</strong> - Develop skills to handle client inquiries, complaints, and maintain professional relationships
+                            </li>
+                        </ul>
 
-                            <div class="course-item p-4 mb-3 bg-dark bg-opacity-25 rounded-3 shadow-sm border border-light border-opacity-10">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="mb-0 fw-bold text-white">Business Operations</h5>
-                                    <span class="badge bg-primary">2 months</span>
-                                </div>
-                                <p class="mb-2 text-white">Learn to manage and optimize business operations effectively.</p>
-                                <div class="d-flex gap-2">
-                                    <span class="badge bg-primary bg-opacity-25 text-white">Process Management</span>
-                                    <span class="badge bg-primary bg-opacity-25 text-white">Resource Planning</span>
-                                    <span class="badge bg-primary bg-opacity-25 text-white">Efficiency</span>
-                                </div>
-                            </div>
-
-                            <div class="course-item p-4 mb-3 bg-dark bg-opacity-25 rounded-3 shadow-sm border border-light border-opacity-10">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="mb-0 fw-bold text-white">HR Management</h5>
-                                    <span class="badge bg-primary">4 months</span>
-                                </div>
-                                <p class="mb-2 text-white">Develop skills in human resource management and employee relations.</p>
-                                <div class="d-flex gap-2">
-                                    <span class="badge bg-primary bg-opacity-25 text-white">Recruitment</span>
-                                    <span class="badge bg-primary bg-opacity-25 text-white">Training</span>
-                                    <span class="badge bg-primary bg-opacity-25 text-white">Employee Relations</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="signup-form mb-4">
-                        <h3 class="section-title text-start h4 mb-4 text-white">Course Benefits</h3>
-                        <ul class="benefit-list list-unstyled">
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="fas fa-check-circle text-white me-2"></i>
-                                <span class="text-white">Professional certification</span>
+                        <h3 class="mt-4 mb-3">Why Choose Our Office Management Courses?</h3>
+                        <p>Our Office Management courses are taught by experienced professionals with years of practical experience in administrative roles. We focus on hands-on learning with real-world scenarios and case studies. By the end of our courses, you'll have:</p>
+                        
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item">
+                                <i class="fas fa-star text-warning me-2"></i>
+                                Practical skills you can apply immediately in your job
                             </li>
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="fas fa-check-circle text-white me-2"></i>
-                                <span class="text-white">Practical case studies</span>
+                            <li class="list-group-item">
+                                <i class="fas fa-star text-warning me-2"></i>
+                                A portfolio of administrative projects to showcase to potential employers
                             </li>
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="fas fa-check-circle text-white me-2"></i>
-                                <span class="text-white">Industry expert mentors</span>
+                            <li class="list-group-item">
+                                <i class="fas fa-star text-warning me-2"></i>
+                                Industry-recognized certifications in office management
                             </li>
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="fas fa-check-circle text-white me-2"></i>
-                                <span class="text-white">Career guidance</span>
-                            </li>
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="fas fa-check-circle text-white me-2"></i>
-                                <span class="text-white">Flexible scheduling</span>
+                            <li class="list-group-item">
+                                <i class="fas fa-star text-warning me-2"></i>
+                                Access to our network of administrative professionals and job opportunities
                             </li>
                         </ul>
                     </div>
-
-                    <div class="signup-form text-center">
-                        <h3 class="section-title h4 mb-3 text-white">Get Started</h3>
-                        <p class="text-white mb-4">Ready to advance your office management career? Enroll now and develop essential skills for success.</p>
-                        <a href="#" class="btn btn-primary w-100 py-3">Enroll Now</a>
-                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">
+                        <i class="fas fa-graduation-cap text-primary me-2"></i>
+                        Course Highlights
+                    </h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-clock text-muted me-2"></i>
+                            <strong>Duration:</strong> 6-10 weeks per course
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-users text-muted me-2"></i>
+                            <strong>Class Size:</strong> Small groups (max 12 students)
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-certificate text-muted me-2"></i>
+                            <strong>Certification:</strong> Industry-recognized certificates
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-laptop text-muted me-2"></i>
+                            <strong>Format:</strong> Online and in-person options
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">
+                        <i class="fas fa-question-circle text-primary me-2"></i>
+                        Need Help?
+                    </h3>
+                    <p>Our Office Management department advisors are here to help you choose the right courses for your career goals.</p>
+                    <a href="#" class="btn btn-primary w-100">
+                        <i class="fas fa-envelope me-2"></i>Contact an Advisor
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .card {
+            border: none;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .badge {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+        }
+        .course-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #444;
+        }
+        .card-title {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        .list-group-item {
+            border: none;
+            padding: 0.75rem 0;
+        }
+    </style>
+}

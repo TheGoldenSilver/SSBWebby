@@ -8,7 +8,7 @@
             <div class="col-md-6">
                 <div class="signup-form">
                     <h2 class="section-title">Create Your Account</h2>
-                    <form asp-action="SignUp" method="post" id="signupForm" novalidate>
+                    <form asp-action="SignUp" method="post" novalidate>
                         <div class="form-group">
                             <label for="fullName" data-error="Please enter your full name">Full Name</label>
                             <input type="text" class="form-control" id="fullName" name="fullName" required placeholder="Enter your full name">
@@ -120,13 +120,13 @@
                         <div class="form-group">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="privacyAct" name="privacyAct" required>
-                                <label class="form-check-label" for="privacyAct">I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Data Privacy Act</a></label>
+                                <label class="form-check-label" for="privacyAct">I agree to the <a href="#">Data Privacy Act</a></label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="termsOfService" name="termsOfService" required>
-                                <label class="form-check-label" for="termsOfService">I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a></label>
+                                <label class="form-check-label" for="termsOfService">I agree to the <a href="#">Terms of Service</a></label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -234,195 +234,5 @@
             });
         }
     }
-    // Form validation and scroll to missing fields
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Save form data to localStorage
-        const formData = new FormData(this);
-        for (const [key, value] of formData.entries()) {
-            localStorage.setItem(key, value);
-        }
-
-        // Get all required inputs
-        const requiredInputs = this.querySelectorAll('[required]');
-        let firstInvalidElement = null;
-        let isValid = true;
-
-        requiredInputs.forEach(input => {
-            const formGroup = input.closest('.form-group');
-            const validationMessage = formGroup.querySelector('.validation-message');
-            
-            // Remove previous validation states
-            formGroup.classList.remove('is-invalid', 'is-valid');
-            
-            // Check if input is empty or unchecked (for checkboxes)
-            let isEmpty = false;
-            if (input.type === 'checkbox') {
-                isEmpty = !input.checked;
-            } else if (input.type === 'radio') {
-                const radioGroup = document.getElementsByName(input.name);
-                isEmpty = !Array.from(radioGroup).some(radio => radio.checked);
-            } else if (input.tagName === 'SELECT') {
-                isEmpty = !input.value;
-            } else {
-                isEmpty = !input.value.trim();
-            }
-
-            if (isEmpty) {
-                isValid = false;
-                formGroup.classList.add('is-invalid');
-                validationMessage.style.display = 'block';
-                
-                // Store the first invalid element for scrolling
-                if (!firstInvalidElement) {
-                    firstInvalidElement = formGroup;
-                }
-            } else {
-                formGroup.classList.add('is-valid');
-                validationMessage.style.display = 'none';
-            }
-        });
-
-        if (!isValid && firstInvalidElement) {
-            // Smooth scroll to the first invalid element
-            firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            // Show toast message
-            const toast = new bootstrap.Toast(document.getElementById('validationToast'));
-            toast.show();
-        } else {
-            // If form is valid, submit it
-            this.submit();
-        }
-    });
-
-    // Load saved form data on page load
-    window.addEventListener('load', function() {
-        const form = document.getElementById('signupForm');
-        const inputs = form.querySelectorAll('input, select');
-        
-        inputs.forEach(input => {
-            const savedValue = localStorage.getItem(input.name);
-            if (savedValue) {
-                if (input.type === 'checkbox' || input.type === 'radio') {
-                    input.checked = savedValue === 'true';
-                } else {
-                    input.value = savedValue;
-                }
-            }
-        });
-
-        // If province is selected, update cities
-        const provinceSelect = document.getElementById('province');
-        if (provinceSelect.value) {
-            updateCities();
-            // Set saved city after cities are updated
-            const savedCity = localStorage.getItem('city');
-            if (savedCity) {
-                setTimeout(() => {
-                    document.getElementById('city').value = savedCity;
-                }, 100);
-            }
-        }
-    });
-
-    // Clear localStorage when form is successfully submitted
-    if (document.querySelector('.alert-success')) {
-        localStorage.clear();
-    }
-</script>
-
-<!-- Validation Toast -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="validationToast" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                <i class="fas fa-exclamation-circle me-2"></i>
-                Please fill in all required fields
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
-
-<!-- Data Privacy Act Modal -->
-<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content bg-dark text-white">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title" id="privacyModalLabel">Data Privacy Act</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <h6 class="mb-3">Privacy Policy</h6>
-                <p>We are committed to protecting your privacy and personal information. This privacy policy explains how we collect, use, and safeguard your data:</p>
-                <ul class="list-unstyled">
-                    <li class="mb-2">
-                        <i class="fas fa-shield-alt text-primary me-2"></i>
-                        We collect and process your personal information for legitimate purposes.
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-envelope text-primary me-2"></i>
-                        Your information will be used for registration, communication, and service improvement.
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-lock text-primary me-2"></i>
-                        We implement appropriate security measures to protect your data.
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-user-edit text-primary me-2"></i>
-                        You have the right to access, correct, and request deletion of your personal information.
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-handshake text-primary me-2"></i>
-                        We may share your information with authorized partners and service providers.
-                    </li>
-                </ul>
-            </div>
-            <div class="modal-footer border-secondary">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Terms of Service Modal -->
-<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content bg-dark text-white">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title" id="termsModalLabel">Terms of Service</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <h6 class="mb-3">Terms and Conditions</h6>
-                <p>By using our service, you agree to the following terms:</p>
-                <ul class="list-unstyled">
-                    <li class="mb-2">
-                        <i class="fas fa-user-check text-primary me-2"></i>
-                        You must provide accurate and complete information during registration.
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-key text-primary me-2"></i>
-                        You are responsible for maintaining the confidentiality of your account.
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-gavel text-primary me-2"></i>
-                        You agree to use the service for lawful purposes only.
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-cog text-primary me-2"></i>
-                        We reserve the right to modify or terminate services at any time.
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-graduation-cap text-primary me-2"></i>
-                        You understand that training and career opportunities are subject to availability and qualification.
-                    </li>
-                </ul>
-            </div>
-            <div class="modal-footer border-secondary">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
-            </div>
-        </div>
-    </div>
-</div>
+</script> 
+</script> 

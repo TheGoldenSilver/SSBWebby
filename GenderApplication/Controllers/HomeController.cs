@@ -1,32 +1,16 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using GenderApplication.Models;
-using GenderApplication.Services;
-using GenderApplication.Data;
 
 namespace GenderApplication.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IPasswordHasher _passwordHasher;
-    private readonly ApplicationDbContext _context;
-    private readonly IEmailService _emailService;
-    private readonly IConfiguration _configuration;
 
-    public HomeController(
-        ILogger<HomeController> logger,
-        IPasswordHasher passwordHasher,
-        ApplicationDbContext context,
-        IEmailService emailService,
-        IConfiguration configuration)
+    public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
-        _passwordHasher = passwordHasher;
-        _context = context;
-        _emailService = emailService;
-        _configuration = configuration;
     }
 
     public IActionResult Index()
@@ -44,56 +28,6 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Assessment()
-    {
-        return View();
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> VerifyEmail(string email, string token)
-    {
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
-        {
-            TempData["ErrorMessage"] = "Invalid verification link.";
-            return RedirectToAction(nameof(Login));
-        }
-
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-        if (user == null)
-        {
-            TempData["ErrorMessage"] = "User not found.";
-            return RedirectToAction(nameof(Login));
-        }
-
-        if (user.IsEmailVerified)
-        {
-            TempData["SuccessMessage"] = "Email already verified. Please log in.";
-            return RedirectToAction(nameof(Login));
-        }
-
-        if (user.EmailVerificationToken != token)
-        {
-            TempData["ErrorMessage"] = "Invalid verification token.";
-            return RedirectToAction(nameof(Login));
-        }
-
-        if (user.EmailVerificationTokenExpiry < DateTime.UtcNow)
-        {
-            TempData["ErrorMessage"] = "Verification link has expired. Please request a new one.";
-            return RedirectToAction(nameof(Login));
-        }
-
-        user.IsEmailVerified = true;
-        user.IsActive = true;
-        user.EmailVerificationToken = null;
-        user.EmailVerificationTokenExpiry = null;
-
-        await _context.SaveChangesAsync();
-
-        TempData["SuccessMessage"] = "Email verified successfully! You can now log in.";
-        return RedirectToAction(nameof(Login));
-    }
-
     public IActionResult SignUp()
     {
         return View();
@@ -107,44 +41,22 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Login(string email, string password, bool rememberMe)
     {
+        // Here you would typically:
+        // 1. Validate the credentials against your database
+        // 2. Set up authentication cookies or tokens
+        // 3. Redirect to the appropriate page based on user role
+        
+        // For now, we'll just redirect to the home page
+        // In a real application, you would check credentials and handle errors
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
             ViewData["ErrorMessage"] = "Email and password are required.";
             return View();
         }
-
-        // Find user by email
-        var user = _context.Users.FirstOrDefault(u => u.Email == email);
-        if (user == null)
-        {
-            ViewData["ErrorMessage"] = "Invalid email or password.";
-            return View();
-        }
-
-        // Verify password
-        if (!_passwordHasher.VerifyPassword(password, user.Password))
-        {
-            ViewData["ErrorMessage"] = "Invalid email or password.";
-            return View();
-        }
-
-        // Check if email is verified
-        if (!user.IsEmailVerified)
-        {
-            ViewData["ErrorMessage"] = "Please verify your email address before logging in.";
-            return View();
-        }
-
-        // Check if user is active
-        if (!user.IsActive)
-        {
-            ViewData["ErrorMessage"] = "This account has been deactivated.";
-            return View();
-        }
-
-        // TODO: Set up authentication cookie/session
+        
+        // Simulate successful login
         TempData["SuccessMessage"] = "You have successfully logged in!";
-        return RedirectToAction(nameof(Assessment));
+        return RedirectToAction(nameof(Index));
     }
 
     public IActionResult ForgotPassword()
@@ -173,7 +85,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SignUp(string fullName, string email, string phone, string province, string education, string department, string workExperience, string password, string confirmPassword, bool privacyAct, bool termsOfService)
+    public IActionResult SignUp(string fullName, string email, string phone, string province, string city, string education, string workExperience, string careerOpportunities, string trainingCourse, string password, string confirmPassword, bool privacyAct, bool termsOfService)
     {
         if (!privacyAct || !termsOfService)
         {
@@ -181,58 +93,18 @@ public class HomeController : Controller
             return View();
         }
 
-        if (string.IsNullOrEmpty(password) || password != confirmPassword)
-        {
-            ModelState.AddModelError("", "Passwords do not match or are empty.");
-            return View();
-        }
-
-        // Check if email is already registered
-        if (_context.Users.Any(u => u.Email == email))
-        {
-            ModelState.AddModelError("", "This email is already registered.");
-            return View();
-        }
-
         if (ModelState.IsValid)
         {
-            // Generate verification token
-            string verificationToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-
-            // Create new user with hashed password
-            var user = new User
-            {
-                FullName = fullName,
-                Email = email,
-                Phone = phone,
-                Province = province,
-                Education = education,
-                Department = department,
-                WorkExperience = workExperience,
-                Password = _passwordHasher.HashPassword(password),
-                CreatedAt = DateTime.UtcNow,
-                IsActive = false,
-                IsEmailVerified = false,
-                EmailVerificationToken = verificationToken,
-                EmailVerificationTokenExpiry = DateTime.UtcNow.AddHours(24)
-            };
-
-            // Save user to database
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            // Generate verification link
-            var verificationLink = Url.Action(
-                "VerifyEmail",
-                "Home",
-                new { email = user.Email, token = verificationToken },
-                protocol: HttpContext.Request.Scheme);
-
-            // Send verification email
-            await _emailService.SendVerificationEmailAsync(user.Email, verificationLink);
+            // Here you would typically:
+            // 1. Validate the input
+            // 2. Check if the email is already registered
+            // 3. Hash the password
+            // 4. Save the user to the database
+            // 5. Send a confirmation email
             
-            TempData["SuccessMessage"] = "Account created successfully! Please check your email to verify your account.";
-            return RedirectToAction(nameof(Assessment));
+            // For now, we'll just redirect to the home page
+            TempData["SuccessMessage"] = "Account created successfully! Please log in.";
+            return RedirectToAction(nameof(Index));
         }
         
         return View();

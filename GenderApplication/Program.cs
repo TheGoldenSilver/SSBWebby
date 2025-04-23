@@ -1,15 +1,10 @@
 using GenderApplication.Data;
-using GenderApplication.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-// Register services
-builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
-builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Configure the database context
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
