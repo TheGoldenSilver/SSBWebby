@@ -43,6 +43,12 @@ namespace GenderApplication.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } = false;
+
+        public string EmailVerificationToken { get; set; }
+
+        public DateTime? EmailVerificationTokenExpiry { get; set; }
+
+        public bool IsEmailVerified { get; set; } = false;
     }
-} 
+}

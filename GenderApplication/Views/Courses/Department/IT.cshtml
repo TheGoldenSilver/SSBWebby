@@ -1,137 +1,125 @@
-﻿@*
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     ViewData["Title"] = "Information Technology Courses";
 }
 
+<div class="signup-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="signup-form">
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-white">Courses</a></li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">Information Technology</li>
+                        </ol>
+                    </nav>
+
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center">
+                            <div class="rounded-circle bg-primary bg-opacity-25 p-4 mb-3 mx-auto" style="width: 150px; height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-laptop-code fa-4x text-white"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h1 class="section-title text-start mb-3 text-white">Information Technology</h1>
+                            <div class="badge bg-primary mb-3 px-3 py-2">IT Department</div>
+                            <p class="lead text-white">Comprehensive IT courses designed to equip you with the skills needed in today's digital world.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Courses</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Information Technology</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
             <div class="row">
-                <div class="col-md-4 text-center">
-                    <div class="bg-light rounded p-4 mb-3">
-                        <i class="fas fa-laptop-code fa-4x text-primary"></i>
-                    </div>
-                </div>
                 <div class="col-md-8">
-                    <h1 class="display-4 mb-3">Information Technology</h1>
-                    <div class="badge bg-primary mb-3">IT Department</div>
-                    <p class="lead">Comprehensive IT courses designed to equip you with the skills needed in today's digital world.</p>
+                    <div class="signup-form mb-4">
+                        <h2 class="section-title text-start h3 mb-4 text-white">About Our IT Courses</h2>
+                        <p class="mb-4 text-white">Our Information Technology courses are designed to provide you with a solid foundation in computer science and practical IT skills. Whether you're a beginner or looking to advance your career, our courses cover a wide range of topics:</p>
+                        
+                        <div class="course-list">
+                            <div class="course-item p-4 mb-3 bg-dark bg-opacity-25 rounded-3 shadow-sm border border-light border-opacity-10">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0 fw-bold text-white">Web Development</h5>
+                                    <span class="badge bg-primary">3 months</span>
+                                </div>
+                                <p class="mb-2 text-white">Learn modern web development technologies and frameworks.</p>
+                                <div class="d-flex gap-2">
+                                    <span class="badge bg-primary bg-opacity-25 text-white">HTML</span>
+                                    <span class="badge bg-primary bg-opacity-25 text-white">CSS</span>
+                                    <span class="badge bg-primary bg-opacity-25 text-white">JavaScript</span>
+                                    <span class="badge bg-primary bg-opacity-25 text-white">React</span>
+                                </div>
+                            </div>
+
+                            <div class="course-item p-4 mb-3 bg-dark bg-opacity-25 rounded-3 shadow-sm border border-light border-opacity-10">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0 fw-bold text-white">Database Management</h5>
+                                    <span class="badge bg-primary">2 months</span>
+                                </div>
+                                <p class="mb-2 text-white">Master database design, implementation, and optimization.</p>
+                                <div class="d-flex gap-2">
+                                    <span class="badge bg-primary bg-opacity-25 text-white">SQL</span>
+                                    <span class="badge bg-primary bg-opacity-25 text-white">MongoDB</span>
+                                    <span class="badge bg-primary bg-opacity-25 text-white">Database Design</span>
+                                </div>
+                            </div>
+
+                            <div class="course-item p-4 mb-3 bg-dark bg-opacity-25 rounded-3 shadow-sm border border-light border-opacity-10">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0 fw-bold text-white">Network Security</h5>
+                                    <span class="badge bg-primary">4 months</span>
+                                </div>
+                                <p class="mb-2 text-white">Learn to protect networks and systems from cyber threats.</p>
+                                <div class="d-flex gap-2">
+                                    <span class="badge bg-primary bg-opacity-25 text-white">Security Protocols</span>
+                                    <span class="badge bg-primary bg-opacity-25 text-white">Firewalls</span>
+                                    <span class="badge bg-primary bg-opacity-25 text-white">Encryption</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h2 class="card-title mb-4">
-                        <i class="fas fa-info-circle text-primary me-2"></i>
-                        About Our IT Courses
-                    </h2>
-                    <div class="course-description">
-                        <p>Our Information Technology courses are designed to provide you with a solid foundation in computer science and practical IT skills. Whether you're a beginner or looking to advance your career, our courses cover a wide range of topics including:</p>
-                        
-                        <ul class="list-group list-group-flush mb-4">
-                            <li class="list-group-item">
-                                <i class="fas fa-check-circle text-success me-2"></i>
-                                <strong>Programming Fundamentals</strong> - Learn the basics of coding with popular languages like Python, Java, and JavaScript
+                <div class="col-md-4">
+                    <div class="signup-form mb-4">
+                        <h3 class="section-title text-start h4 mb-4 text-white">Course Benefits</h3>
+                        <ul class="benefit-list list-unstyled">
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="fas fa-check-circle text-white me-2"></i>
+                                <span class="text-white">Industry-relevant curriculum</span>
                             </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-check-circle text-success me-2"></i>
-                                <strong>Web Development</strong> - Master HTML, CSS, and modern frameworks like React and Angular
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="fas fa-check-circle text-white me-2"></i>
+                                <span class="text-white">Hands-on practical training</span>
                             </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-check-circle text-success me-2"></i>
-                                <strong>Database Management</strong> - Understand SQL, NoSQL, and database design principles
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="fas fa-check-circle text-white me-2"></i>
+                                <span class="text-white">Expert instructors</span>
                             </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-check-circle text-success me-2"></i>
-                                <strong>Cybersecurity</strong> - Learn about network security, encryption, and protecting digital assets
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="fas fa-check-circle text-white me-2"></i>
+                                <span class="text-white">Job placement assistance</span>
                             </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-check-circle text-success me-2"></i>
-                                <strong>Cloud Computing</strong> - Explore AWS, Azure, and cloud infrastructure management
-                            </li>
-                        </ul>
-
-                        <h3 class="mt-4 mb-3">Why Choose Our IT Courses?</h3>
-                        <p>Our IT courses are taught by industry professionals with years of practical experience. We focus on hands-on learning with real-world projects and case studies. By the end of our courses, you'll have:</p>
-                        
-                        <ul class="list-group list-group-flush mb-4">
-                            <li class="list-group-item">
-                                <i class="fas fa-star text-warning me-2"></i>
-                                Practical skills you can apply immediately in your job
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-star text-warning me-2"></i>
-                                A portfolio of projects to showcase to potential employers
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-star text-warning me-2"></i>
-                                Industry-recognized certifications
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-star text-warning me-2"></i>
-                                Access to our network of IT professionals and job opportunities
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="fas fa-check-circle text-white me-2"></i>
+                                <span class="text-white">Flexible learning schedule</span>
                             </li>
                         </ul>
                     </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h3 class="card-title mb-3">
-                        <i class="fas fa-graduation-cap text-primary me-2"></i>
-                        Course Highlights
-                    </h3>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <i class="fas fa-clock text-muted me-2"></i>
-                            <strong>Duration:</strong> 8-12 weeks per course
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-users text-muted me-2"></i>
-                            <strong>Class Size:</strong> Small groups (max 15 students)
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-certificate text-muted me-2"></i>
-                            <strong>Certification:</strong> Industry-recognized certificates
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-laptop text-muted me-2"></i>
-                            <strong>Format:</strong> Online and in-person options
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title mb-3">
-                        <i class="fas fa-question-circle text-primary me-2"></i>
-                        Need Help?
-                    </h3>
-                    <p>Our IT department advisors are here to help you choose the right courses for your career goals.</p>
-                    <a href="#" class="btn btn-primary w-100">
-                        <i class="fas fa-envelope me-2"></i>Contact an Advisor
-                    </a>
+
+                    <div class="signup-form text-center">
+                        <h3 class="section-title h4 mb-3 text-white">Get Started</h3>
+                        <p class="text-white mb-4">Ready to begin your IT journey? Enroll now and take the first step towards your tech career.</p>
+                        <a href="#" class="btn btn-primary w-100 py-3">Enroll Now</a>
+                    </div>
                 </div>
             </div>
         </div>
