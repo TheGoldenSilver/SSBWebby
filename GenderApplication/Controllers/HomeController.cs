@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using GenderApplication.Models;
 using GenderApplication.Services;
 using GenderApplication.Data;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace GenderApplication.Controllers;
 
@@ -46,6 +49,28 @@ public class HomeController : Controller
 
     public IActionResult Assessment()
     {
+        // Show welcome message if present
+        if (TempData["WelcomeMessage"] != null)
+        {
+            ViewData["WelcomeMessage"] = TempData["WelcomeMessage"];
+        }
+
+        // Check if user is authenticated
+        if (User.Identity?.IsAuthenticated != true)
+        {
+            TempData["ErrorMessage"] = "Please log in to access the assessment.";
+            return RedirectToAction(nameof(Login));
+        }
+
+        // Get the user's email from claims
+        var userEmail = User.Identity.Name;
+        var user = _context.Users.FirstOrDefault(u => u.Email == userEmail);
+
+        if (user != null && !user.IsEmailVerified)
+        {
+            ViewData["VerificationMessage"] = "Please verify your email to unlock all features.";
+        }
+
         return View();
     }
 
@@ -142,7 +167,19 @@ public class HomeController : Controller
             return View();
         }
 
-        // TODO: Set up authentication cookie/session
+        // Set up authentication cookie/session
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim("FullName", user.FullName)
+        };
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var authProperties = new AuthenticationProperties
+        {
+            IsPersistent = rememberMe,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddHours(4)
+        };
+        HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties).Wait();
         TempData["SuccessMessage"] = "You have successfully logged in!";
         return RedirectToAction(nameof(Assessment));
     }
@@ -173,7 +210,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SignUp(string fullName, string email, string phone, string province, string education, string department, string workExperience, string password, string confirmPassword, bool privacyAct, bool termsOfService)
+    public async Task<IActionResult> SignUp(string fullName, string email, string phone, string province, string city, string education, string workExperience, string careerOpportunities, string trainingCourse, string password, string confirmPassword, bool privacyAct, bool termsOfService)
     {
         if (!privacyAct || !termsOfService)
         {
@@ -196,42 +233,46 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
-            // Generate verification token
-            string verificationToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-
-            // Create new user with hashed password
+            // Immediately verify and activate the user (no email verification)
             var user = new User
             {
                 FullName = fullName,
                 Email = email,
                 Phone = phone,
                 Province = province,
+                City = city,
                 Education = education,
-                Department = department,
+
                 WorkExperience = workExperience,
+                CareerOpportunities = careerOpportunities,
+                TrainingCourse = trainingCourse,
                 Password = _passwordHasher.HashPassword(password),
                 CreatedAt = DateTime.UtcNow,
-                IsActive = false,
-                IsEmailVerified = false,
-                EmailVerificationToken = verificationToken,
-                EmailVerificationTokenExpiry = DateTime.UtcNow.AddHours(24)
+                IsActive = true,
+                IsEmailVerified = true,
+                EmailVerificationToken = null,
+                EmailVerificationTokenExpiry = null
             };
 
             // Save user to database
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            // Generate verification link
-            var verificationLink = Url.Action(
-                "VerifyEmail",
-                "Home",
-                new { email = user.Email, token = verificationToken },
-                protocol: HttpContext.Request.Scheme);
+            // Auto-login after sign-up
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim("FullName", user.FullName)
+            };
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(4)
+            };
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-            // Send verification email
-            await _emailService.SendVerificationEmailAsync(user.Email, verificationLink);
-            
-            TempData["SuccessMessage"] = "Account created successfully! Please check your email to verify your account.";
+            TempData["WelcomeMessage"] = $"Welcome, {user.FullName}! Your account has been created.";
             return RedirectToAction(nameof(Assessment));
         }
         
@@ -242,5 +283,31 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SubmitAssessment([FromBody] AssessmentDto dto)
+    {
+        if (dto?.SoftSkills == null || dto?.TechSkills == null || dto.SoftSkills.Length != 5 || dto.TechSkills.Length != 5)
+            return BadRequest("Invalid data");
+        var userEmail = User.Identity?.Name;
+        if (string.IsNullOrEmpty(userEmail))
+            return Unauthorized();
+        var response = new Models.AssessmentResponse
+        {
+            UserEmail = userEmail,
+            SoftSkills = System.Text.Json.JsonSerializer.Serialize(dto.SoftSkills),
+            TechSkills = System.Text.Json.JsonSerializer.Serialize(dto.TechSkills),
+            SubmittedAt = DateTime.UtcNow
+        };
+        _context.AssessmentResponses.Add(response);
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
+
+    public class AssessmentDto
+    {
+        public int[] SoftSkills { get; set; }
+        public int[] TechSkills { get; set; }
     }
 }

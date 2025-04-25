@@ -1,3 +1,383 @@
 @{
     ViewData["Title"] = "Assessment";
 }
+
+@if (ViewData["WelcomeMessage"] != null)
+{
+    <div class="alert alert-success mt-4" role="alert">
+        @ViewData["WelcomeMessage"]
+    </div>
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<style>
+    .stepper {
+    position: relative;
+    z-index: 1;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        overflow-x: auto;
+    }
+    .step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    color: #888;
+    font-weight: 500;
+    background: none;
+    border: none;
+    outline: none;
+    transition: color 0.2s;
+    z-index: 1;
+    padding-bottom: 12px;
+}
+.step .step-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    margin: 0 auto 6px auto;
+    border-radius: 50%;
+    background: #e7f1ff;
+    color: #0d6efd;
+    font-size: 1.3rem;
+    border: 2px solid #b6d4fe;
+    transition: background 0.3s, color 0.3s, border 0.3s;
+}
+.step.active .step-icon {
+    background: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+.step.active {
+    color: #0d6efd;
+    font-weight: bold;
+}
+.step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    background: #dee2e6;
+    z-index: 0;
+    transform: translateY(-50%);
+}
+.step.active:not(:last-child)::after {
+    background: #0d6efd;
+}
+    .step.active {
+        color: #0d6efd;
+        font-weight: bold;
+    }
+    .step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 100%;
+        height: 2px;
+        background: #dee2e6;
+        z-index: 0;
+        transform: translateY(-50%);
+    }
+    .step.active:not(:last-child)::after {
+        background: #0d6efd;
+    }
+    .step-label {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+    }
+    .step-content {
+    min-height: 220px;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: #363b5c;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid #232646;
+}
+    .step-image {
+        max-width: 100%;
+        height: 120px;
+        object-fit: contain;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="main-bg" style="background: #2d3250; height: 100vh; overflow: hidden; position:relative; display: flex; flex-direction: column;">
+    <style>
+        .footer-account {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100vw;
+            background: #232646;
+            color: #ffe066;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+        }
+        .footer-account .calendar-box {
+            background: #363b5c;
+            border-radius: 8px;
+            padding: 0.3rem 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .footer-account input[type="date"] {
+            background: none;
+            border: none;
+            color: #ffe066;
+            font-size: 1rem;
+            outline: none;
+            width: 135px;
+        }
+        .footer-account input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.8);
+        }
+    </style>
+    <!-- Journey Title -->
+    <div class="container mt-4">
+    <div class="text-center">
+        <h2 class="fw-bold" style="color:#ffe066; font-size:2.3rem; letter-spacing:1px;">My SkillSandBox Journey</h2>
+    </div>
+</div>
+    <div class="container mt-4">
+
+    <!-- Footer with account and calendar -->
+    <div class="footer-account">
+        <div>
+            <i class="bi bi-person-circle me-2"></i>
+            @if (User.Identity.IsAuthenticated) {
+                var fullName = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value ?? "User";
+                var names = fullName.Split(' ');
+                var firstName = names.Length > 0 ? names[0] : "";
+                var lastName = names.Length > 1 ? names[^1] : "";
+                <span>@firstName @lastName</span>
+            } else {
+                <span>Guest</span>
+            }
+        </div>
+        <div class="calendar-box">
+            <i class="bi bi-calendar-event"></i>
+            <input type="date" id="calendarStart" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            <span style="color:#ffe066;">-</span>
+            <input type="date" id="calendarEnd" value="@DateTime.Now.AddDays(7).ToString("yyyy-MM-dd")" />
+        </div>
+    </div>
+    <script>
+        // Calendar logic: update input background on change
+        document.addEventListener('DOMContentLoaded', function() {
+            const start = document.getElementById('calendarStart');
+const end = document.getElementById('calendarEnd');
+function syncColors() {
+    if (start) start.style.color = start.value ? '#ffe066' : '#fff';
+    if (end) end.style.color = end.value ? '#ffe066' : '#fff';
+}
+if (start) start.addEventListener('change', syncColors);
+if (end) end.addEventListener('change', syncColors);
+syncColors();
+        });
+    </script>
+
+    <div class="stepper mb-2 position-relative" id="journeyStepper">
+    <!-- Visual progress bar under steps -->
+    <div class="progress position-absolute w-100" style="height: 6px; bottom: -8px; left: 0; z-index: 0;">
+        <div id="progressBar" class="progress-bar bg-primary" role="progressbar" style="width: 0%; transition: width 0.4s;"></div>
+    </div>
+        <button class="step active" onclick="showStep(0)">
+    <span class="step-icon"><i class="bi bi-flag"></i></span>
+    <span class="step-label">Start</span>
+</button>
+<button class="step" onclick="showStep(1)">
+    <span class="step-icon"><i class="bi bi-person-lines-fill"></i></span>
+    <span class="step-label">Interview</span>
+</button>
+<button class="step" onclick="showStep(2)">
+    <span class="step-icon"><i class="bi bi-journal-text"></i></span>
+    <span class="step-label">Enrollment</span>
+</button>
+<button class="step" onclick="showStep(3)">
+    <span class="step-icon"><i class="bi bi-mortarboard"></i></span>
+    <span class="step-label">Training</span>
+</button>
+<button class="step" onclick="showStep(4)">
+    <span class="step-icon"><i class="bi bi-briefcase"></i></span>
+    <span class="step-label">Internship</span>
+</button>
+<button class="step" onclick="showStep(5)">
+    <span class="step-icon"><i class="bi bi-trophy"></i></span>
+    <span class="step-label">Placement</span>
+</button>
+    </div>
+    <div class="step-content flex-grow-1 d-flex flex-column justify-content-center align-items-center" id="stepContent" style="min-height:0; max-height:calc(100vh - 210px); overflow:auto; padding:0.5rem 0.5rem;">
+    <div id="assessmentIntro" class="w-100 d-flex flex-column flex-md-row align-items-center justify-content-center mb-4" style="gap:2rem;">
+        <img src="https://img.freepik.com/free-photo/group-people-working-out-business-plan-office_1303-15861.jpg" alt="Assessment" style="width:220px; max-width:90vw; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.10);">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            <h2 class="fw-bold text-center" style="color:#222;">Start of your Journey/Assessment</h2>
+            <p class="text-center" style="color:#fff; font-size:1.1rem; max-width:400px;">Begin your SSBWebby journey by taking the initial assessment. This will help us understand your skills and interests.</p>
+            <button id="takeAssessmentBtn" class="btn btn-outline-primary mt-2" style="font-size:1.15rem; padding:0.5rem 2rem; border-radius:10px;">Take Assessment</button>
+        </div>
+    </div>
+    <div id="assessmentFormContainer"></div>
+</div>
+        <!-- Dynamic content will be shown here -->
+    </div>
+</div>
+
+<script>
+const stepContents = [
+    `<img src="https://img.freepik.com/free-photo/group-people-working-out-business-plan-office_1303-15861.jpg" class="step-image" alt="Start">
+    <h4>Start of your Journey/Assessment</h4>
+    <p>Begin your SSBWebby journey by taking the initial assessment. This will help us understand your skills and interests.</p>
+    <button id="takeAssessmentBtn" class="btn btn-primary">Take Assessment</button>`
+    ,
+    `<img src="https://img.freepik.com/free-photo/business-people-shaking-hands_53876-13391.jpg" class="step-image" alt="Interview">
+    <h4>Interview</h4>
+    <p>Prepare for your interview. Our team will contact you for the next steps after your assessment.</p>
+    <button class="btn btn-outline-primary" disabled>Schedule Interview (Coming Soon)</button>`
+    ,
+    `<img src="https://img.freepik.com/free-photo/medium-shot-students-with-books_23-2148884986.jpg" class="step-image" alt="Enrollment">
+    <h4>Enrollment</h4>
+    <p>Congratulations! You are eligible to enroll in our training programs. Choose your preferred course to get started.</p>
+    <button class="btn btn-outline-success" disabled>Enroll Now (Coming Soon)</button>`
+    ,
+    `<img src="https://img.freepik.com/free-photo/teacher-explaining-lesson-group-students_23-2148892947.jpg" class="step-image" alt="Training">
+    <h4>Training</h4>
+    <p>Participate in training sessions to enhance your skills and knowledge.</p>
+    <button class="btn btn-outline-warning" disabled>View Training Materials (Coming Soon)</button>`
+    ,
+    `<img src="https://img.freepik.com/free-photo/internship-concept-wooden-cubes_23-2148884987.jpg" class="step-image" alt="Internship">
+    <h4>Internship</h4>
+    <p>Apply your skills in a real-world environment through our internship program.</p>
+    <button class="btn btn-outline-info" disabled>View Internship Opportunities (Coming Soon)</button>`
+    ,
+    `<img src="https://img.freepik.com/free-photo/job-offer-concept_23-2148884988.jpg" class="step-image" alt="Placement">
+    <h4>Placement</h4>
+    <p>Get placed in a job that matches your skills and aspirations. Good luck!</p>
+    <button class="btn btn-outline-secondary" disabled>View Placement Results (Coming Soon)</button>`
+];
+
+// Assessment HTML template
+const assessmentHtml = `
+<div class="container assessment-section animate__animated animate__fadeIn" style="max-width: 900px; padding: 0; font-size:0.95rem;">
+    <form id="assessmentAllForm" autocomplete="off" style="width:100%;">
+        <div class="row g-1">
+    <div class="row align-items-center mb-4">
+        <div class="col-auto">
+            <div class="profile-avatar bg-light rounded-circle d-flex align-items-center justify-content-center shadow" style="width:80px;height:80px;">
+                <i class="bi bi-person" style="font-size:2.5rem;color:#bbb;"></i>
+            </div>
+        </div>
+        <div class="col ps-0">
+            <div class="fw-bold fs-5">LAST NAME <span class="badge bg-success align-middle ms-2"><i class="bi bi-check-circle me-1"></i>ONLINE</span></div>
+            <div class="text-muted small">Created: 24/02/2030</div>
+        </div>
+        <div class="col text-end d-none d-md-block">
+            <i class="bi bi-calendar-event me-2"></i>
+            <span class="small">19.12.2030 - 25.12.2030</span>
+        </div>
+        <div class="col-auto d-none d-md-block">
+            <i class="bi bi-person-circle fs-4 me-2"></i> Ashley H.
+            <i class="bi bi-chevron-down ms-2"></i>
+        </div>
+    </div>
+    <div class="text-center mb-3 fw-semibold">Answer by clicking on the choices below. Be honest.</div>
+    <div class="row g-1">
+        <div class="col-md-6">
+            <h3 class="fw-bold mb-3" style="color:#ffe066; font-size:1.5rem;">Soft Skills</h3>
+            <form id="softSkillsForm">
+                ${[1,2,3,4,5].map(i => `
+                <div class="mb-1">
+                    <div class="fw-semibold mb-1" style="color:#fff;font-size:0.95rem;">${i}. How confident am I in my ability to communicate effectively with colleagues, clients, mentors, and partners</div>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-1">
+                        <span class="small text-light" style="font-size:0.95rem;">Needs Improvement</span>
+                        ${[1,2,3,4,5,6].map(val => `
+                            <input type="radio" class="btn-check" name="soft${i}" id="soft${i}_${val}" autocomplete="off" required>
+                            <label class="btn btn-outline-light" for="soft${i}_${val}" style="min-width:26px; min-height:26px; padding:0 0.2rem; font-size:0.95rem;">${val}</label>
+                        `).join('')}
+                        <span class="small text-light" style="font-size:0.95rem;">Excellent</span>
+                    </div>
+                </div>
+                `).join('')}
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h3 class="fw-bold mb-3" style="color:#ffe066; font-size:1.3rem;">Technical Skills</h3>
+            <form id="techSkillsForm" style="font-size:0.95rem;">
+                ${[1,2,3,4,5].map(i => `
+                <div class="mb-1">
+                    <div class="fw-semibold mb-1" style="color:#fff;font-size:0.95rem;">${i}. How confident am I in my ability to communicate effectively with colleagues, clients, mentors, and partners</div>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-1">
+                        <span class="small text-light" style="font-size:0.95rem;">Needs Improvement</span>
+                        ${[1,2,3,4,5,6].map(val => `
+                            <input type="radio" class="btn-check" name="tech${i}" id="tech${i}_${val}" autocomplete="off" required>
+                            <label class="btn btn-outline-light" for="tech${i}_${val}" style="min-width:26px; min-height:26px; padding:0 0.2rem; font-size:0.95rem;">${val}</label>
+                        `).join('')}
+                        <span class="small text-light" style="font-size:0.95rem;">Excellent</span>
+                    </div>
+                </div>
+                `).join('')}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column align-items-center mt-2" style="gap:0.5rem;">
+        <button id="assessmentSubmitBtn" type="submit" class="btn btn-warning px-5 py-2 fw-bold" style="font-size:1.1rem; border-radius:9px;">Submit</button>
+        <div id="assessmentResultMsg" class="mt-1 text-center" style="min-height:24px;"></div>
+    </div>
+    </form>
+</div>
+`;
+
+function showStep(idx) {
+    // Highlight the current step
+    const steps = document.querySelectorAll('.step');
+    steps.forEach((step, i) => {
+        step.classList.toggle('active', i === idx);
+    });
+    // Show the content for the selected step
+    document.getElementById('stepContent').innerHTML = stepContents[idx];
+    // Update the progress bar
+    const progress = ((idx) / (steps.length - 1)) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+}
+// Show the first step by default
+showStep(0);
+
+// Handle Take Assessment button click
+function showAssessmentForm() {
+    document.getElementById('stepContent').innerHTML = assessmentHtml;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    function attachAssessmentBtnListener() {
+        const btn = document.getElementById('takeAssessmentBtn');
+        if (btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showAssessmentForm();
+            });
+        }
+    }
+    attachAssessmentBtnListener();
+    // If content changes and button is re-rendered, re-attach
+    const observer = new MutationObserver(() => attachAssessmentBtnListener());
+    observer.observe(document.getElementById('stepContent'), { childList: true, subtree: true });
+});
+
+</script>

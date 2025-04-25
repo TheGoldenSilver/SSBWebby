@@ -29,13 +29,19 @@ namespace GenderApplication.Models
         [StringLength(50)]
         public string Education { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Department { get; set; }
 
         [Required]
         [StringLength(50)]
         public string WorkExperience { get; set; }
+
+        [StringLength(50)]
+        public string City { get; set; }
+
+        [StringLength(50)]
+        public string CareerOpportunities { get; set; }
+
+        [StringLength(100)]
+        public string TrainingCourse { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -45,7 +51,7 @@ namespace GenderApplication.Models
 
         public bool IsActive { get; set; } = false;
 
-        public string EmailVerificationToken { get; set; }
+        public string? EmailVerificationToken { get; set; }
 
         public DateTime? EmailVerificationTokenExpiry { get; set; }
 

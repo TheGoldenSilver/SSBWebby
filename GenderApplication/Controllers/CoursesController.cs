@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,9 +49,8 @@ namespace GenderApplication.Controllers
                         return NotFound();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                // Log the exception
                 return RedirectToAction("Error", "Home");
             }
         }

@@ -8,7 +8,16 @@
             <div class="col-md-6">
                 <div class="signup-form">
                     <h2 class="section-title">Create Your Account</h2>
-                    <form asp-action="SignUp" method="post" id="signupForm" novalidate>
+                    @if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+<form asp-action="SignUp" method="post" id="signupForm" novalidate>
                         <div class="form-group">
                             <label for="fullName" data-error="Please enter your full name">Full Name</label>
                             <input type="text" class="form-control" id="fullName" name="fullName" required placeholder="Enter your full name">
@@ -52,6 +61,7 @@
                             </select>
                             <div class="validation-message">Please select your highest education</div>
                         </div>
+
                         <div class="form-group">
                             <label for="workExperience" data-error="Please select your work experience">Work Experience</label>
                             <select class="form-control" id="workExperience" name="workExperience" required>
@@ -119,13 +129,13 @@
                         </div>
                         <div class="form-group">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="privacyAct" name="privacyAct" required>
+                                <input type="checkbox" class="form-check-input" id="privacyAct" name="privacyAct" value="true" required>
                                 <label class="form-check-label" for="privacyAct">I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Data Privacy Act</a></label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="termsOfService" name="termsOfService" required>
+                                <input type="checkbox" class="form-check-input" id="termsOfService" name="termsOfService" value="true" required>
                                 <label class="form-check-label" for="termsOfService">I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a></label>
                             </div>
                         </div>
@@ -236,14 +246,6 @@
     }
     // Form validation and scroll to missing fields
     document.getElementById('signupForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Save form data to localStorage
-        const formData = new FormData(this);
-        for (const [key, value] of formData.entries()) {
-            localStorage.setItem(key, value);
-        }
-
         // Get all required inputs
         const requiredInputs = this.querySelectorAll('[required]');
         let firstInvalidElement = null;
@@ -290,10 +292,9 @@
             // Show toast message
             const toast = new bootstrap.Toast(document.getElementById('validationToast'));
             toast.show();
-        } else {
-            // If form is valid, submit it
-            this.submit();
-        }
+            e.preventDefault(); // Only prevent submission if invalid
+        } // Otherwise, allow native submit
+
     });
 
     // Load saved form data on page load
